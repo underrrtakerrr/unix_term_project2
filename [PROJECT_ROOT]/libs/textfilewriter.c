@@ -1,21 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstring>
 #include "linkedlist.h"
 #include "textfilewriter.h"
 
 void create_music_titles(FILE* stream){
-    int num=0;
+    char *song_num;
 
-    fscanf(fp, "%d", &num);
+    fgets(song_num, MAX_TITLE_SIZE, stream);
 
-    for(int i=0; i<num; i++){
-        char title[MAX_TITLE_SIZE];
-
+    char title[MAX_TITLE_SIZE];
+    for(int i=0; i<atoi(song_num); i++){
+        char* music = (char*)malloc(sizeof(char));
+        fgets(title, MAX_TITLE_SIZE, stream);
+        if(i==atoi(song_num)-1)
+            strcpy(music, title);
+        else
+            strncpy(music, title, strlen(title)-1);
+        append_left(MAX_TITLE_SIZE, music);
+/*
         while(fgets(title,sizeof(title), fp) != NULL){
             append(sizeof(title),title);
-        }
+        }*/
     }
-
+    return;
 }
 
 void read_file(char* file_name){
@@ -41,8 +49,8 @@ void write_file(char* file_name){
     }
 
     else{
-        //linkedlist.c 참고해서 작성
+        print_file(fp);
     }
-
     fclose(fp);
+    return;
 }
